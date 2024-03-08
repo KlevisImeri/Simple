@@ -1,0 +1,6 @@
+#include "framework.h"
+#include "fragmentShader.h"
+#include "vertexShader.h"
+#include "Triangle.h"
+#include "Object.h"
+#include "Dnum.h"
