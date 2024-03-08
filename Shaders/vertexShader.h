@@ -12,3 +12,19 @@ const char* const vertexMVP = R"(
 		color = vc;
 	}
 )";
+
+const char * const vertexDnum = R"(
+	#version 330
+    precision highp float;
+
+    uniform vec2 point, tangent;
+
+	layout(location = 0) in vec2 vertexPosition;	// Attrib Array 0
+
+	void main() {
+		vec2 normal = vec2(-tangent.y, tangent.x);	// normal vector is orthogonal to the tangent
+		// rotate + translate
+		vec2 p = (vertexPosition.x * tangent + vertexPosition.y * normal + point); 
+		gl_Position = vec4(p.x, p.y, 0, 1); 		// transform to clipping space
+	}
+)";

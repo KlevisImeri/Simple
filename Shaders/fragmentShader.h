@@ -10,3 +10,16 @@ const char* const fragmentDefault = R"(
 		outColor = vec4(color, 1);	// computed color is the color of the primitive
 	}
 )";
+
+
+const char * const fragmentDnum = R"(
+	#version 330
+    precision highp float;
+
+	uniform vec4 color;			// uniform color
+	out vec4 fragmentColor;		// output that goes to the raster memory as told by glBindFragDataLocation
+
+	void main() {
+		fragmentColor = color; 
+	}
+)";

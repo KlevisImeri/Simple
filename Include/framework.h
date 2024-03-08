@@ -398,4 +398,5 @@ public:
 
 	~GPUProgram() { if (shaderProgramId > 0) glDeleteProgram(shaderProgramId); }
 };
+
 #endif //FRAMEWORK_H
