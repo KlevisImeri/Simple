@@ -1,0 +1,27 @@
+[
+{
+  "directory": "D:/Users/Admin/Desktop/OpenGl/Lab/build",
+  "command": "\"D:/Program Files (x86)/C_compilers/mingw32/bin/g++.exe\"  @CMakeFiles/simple.dir/includes_CXX.rsp  -o CMakeFiles/simple.dir/Src/Curve2.cpp.obj -c D:/Users/Admin/Desktop/OpenGl/Lab/Src/Curve2.cpp",
+  "file": "D:/Users/Admin/Desktop/OpenGl/Lab/Src/Curve2.cpp"
+},
+{
+  "directory": "D:/Users/Admin/Desktop/OpenGl/Lab/build",
+  "command": "\"D:/Program Files (x86)/C_compilers/mingw32/bin/g++.exe\"  @CMakeFiles/simple.dir/includes_CXX.rsp  -o CMakeFiles/simple.dir/Src/Shapes/Object.cpp.obj -c D:/Users/Admin/Desktop/OpenGl/Lab/Src/Shapes/Object.cpp",
+  "file": "D:/Users/Admin/Desktop/OpenGl/Lab/Src/Shapes/Object.cpp"
+},
+{
+  "directory": "D:/Users/Admin/Desktop/OpenGl/Lab/build",
+  "command": "\"D:/Program Files (x86)/C_compilers/mingw32/bin/g++.exe\"  @CMakeFiles/simple.dir/includes_CXX.rsp  -o CMakeFiles/simple.dir/Src/Shapes/Triangle.cpp.obj -c D:/Users/Admin/Desktop/OpenGl/Lab/Src/Shapes/Triangle.cpp",
+  "file": "D:/Users/Admin/Desktop/OpenGl/Lab/Src/Shapes/Triangle.cpp"
+},
+{
+  "directory": "D:/Users/Admin/Desktop/OpenGl/Lab/build",
+  "command": "\"D:/Program Files (x86)/C_compilers/mingw32/bin/g++.exe\"  @CMakeFiles/simple.dir/includes_CXX.rsp  -o CMakeFiles/simple.dir/Src/framework.cpp.obj -c D:/Users/Admin/Desktop/OpenGl/Lab/Src/framework.cpp",
+  "file": "D:/Users/Admin/Desktop/OpenGl/Lab/Src/framework.cpp"
+},
+{
+  "directory": "D:/Users/Admin/Desktop/OpenGl/Lab/build",
+  "command": "\"D:/Program Files (x86)/C_compilers/mingw32/bin/g++.exe\"  @CMakeFiles/simple.dir/includes_CXX.rsp  -o CMakeFiles/simple.dir/Src/main.cpp.obj -c D:/Users/Admin/Desktop/OpenGl/Lab/Src/main.cpp",
+  "file": "D:/Users/Admin/Desktop/OpenGl/Lab/Src/main.cpp"
+}
+]

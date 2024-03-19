@@ -26,11 +26,36 @@ void onMouse(int button, int state, int pX, int pY);
 // Idle event indicating that some time elapsed: do animation here
 void onIdle();
 
+void my_setup_OpenGL() {
+  // glEnable(GL_DEPTH_TEST); // Enable depth buffering
+  // glDepthFunc(GL_LEQUAL);  // Useful for multipass shaders
+  // Set polygon drawing mode for front and back of each triangle
+  // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  // glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+  // Disable backface culling to render both sides of triangles
+  // glDisable(GL_CULL_FACE);
+  // Multisamplnig
+  glEnable(GL_MULTISAMPLE);
+
+#if 1
+  // smoth points and lines
+  glEnable(GL_POINT_SMOOTH);
+  glEnable(GL_LINE_SMOOTH);
+  glHint(GL_POINT_SMOOTH_HINT, GL_NICEST);
+  glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+#endif
+
+  glPointSize(8);
+  glLineWidth(5);
+}
+
 // Entry point of the application
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   // Initialize GLUT, Glew and OpenGL
   glutInit(&argc, argv);
-
   // OpenGL major and minor versions
   int majorVersion = 3, minorVersion = 3;
 #if !defined(__APPLE__)
@@ -38,22 +63,23 @@ int main(int argc, char* argv[]) {
 #endif
   glutInitWindowSize(
       windowWidth,
-      windowHeight);  // Application window is initially of resolution 600x600
+      windowHeight); // Application window is initially of resolution 600x600
   glutInitWindowPosition(100,
-                         100);  // Relative location of the application window
+                         100); // Relative location of the application window
 #if defined(__APPLE__)
   glutInitDisplayMode(
       GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH |
-      GLUT_3_2_CORE_PROFILE);  // 8 bit R,G,B,A + double buffer + depth buffer
+      GLUT_3_2_CORE_PROFILE); // 8 bit R,G,B,A + double buffer + depth buffer
 #else
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 #endif
   glutCreateWindow(argv[0]);
 
 #if !defined(__APPLE__)
-  glewExperimental = true;  // magic
+  glewExperimental = true; // magic
   glewInit();
 #endif
+
   printf("GL Vendor    : %s\n", glGetString(GL_VENDOR));
   printf("GL Renderer  : %s\n", glGetString(GL_RENDERER));
   printf("GL Version (string)  : %s\n", glGetString(GL_VERSION));
@@ -65,13 +91,16 @@ int main(int argc, char* argv[]) {
   // Initialize this program and create shaders
   onInitialization();
 
-  glutDisplayFunc(onDisplay);  // Register event handlers
+  glutDisplayFunc(onDisplay); // Register event handlers
   glutMouseFunc(onMouse);
   glutIdleFunc(onIdle);
   glutKeyboardFunc(onKeyboard);
   glutKeyboardUpFunc(onKeyboardUp);
   glutMotionFunc(onMouseMotion);
 
+  my_setup_OpenGL();
+
   glutMainLoop();
+
   return 1;
 }
