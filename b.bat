@@ -1,3 +1,4 @@
+@REM This is if you are running the Clang LSP to get the compile_commands.json
 del /s /q build
 mkdir build
 cd build

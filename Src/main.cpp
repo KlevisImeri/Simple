@@ -1,4 +1,11 @@
+#include <string>
+
 #include "Simple.h"
+
+int main(int argc, char *argv[]) { 
+  setup(&argc, argv); 
+
+}
 
 // global variable yuou need
 GPUProgram gpuProgram;
@@ -16,14 +23,14 @@ void onInitialization() {
 
 // Window has become invalid: Redraw
 void onDisplay() {
-  glClearColor(0, 0, 0, 0);     // background color
-  glClear(GL_COLOR_BUFFER_BIT); // clear frame buffer
+  glClearColor(0, 0, 0, 0);      // background color
+  glClear(GL_COLOR_BUFFER_BIT);  // clear frame buffer
 
   curve.Render();
 
   mat4 MVP = ScaleMatrix(vec3(1, 1, 1));
   gpuProgram.setUniform(MVP, "MVP");
-  glutSwapBuffers(); // exchange buffers for double buffering
+  glutSwapBuffers();  // exchange buffers for double buffering
 }
 
 void onKeyboard(unsigned char key, int pX, int pY) {}
@@ -36,32 +43,32 @@ void onMouseMotion(int pX, int pY) {
 void onMouse(int button, int state, int pX, int pY) {
   float cX = 2.0f * pX / windowWidth - 1;
   float cY = 1.0f - 2.0f * pY / windowHeight;
-  char *buttonStat;
+  std::string buttonStat;
   switch (state) {
-  case GLUT_DOWN:
-    buttonStat = "pressed";
-    curve.PickControlPoint(cX, cY);
-    break;
-  case GLUT_UP:
-    buttonStat = "released";
-    curve.ReleaseControlPoint();
-    break;
+    case GLUT_DOWN:
+      buttonStat = "pressed";
+      curve.PickControlPoint(cX, cY);
+      break;
+    case GLUT_UP:
+      buttonStat = "released";
+      curve.ReleaseControlPoint();
+      break;
   }
   switch (button) {
-  case GLUT_LEFT_BUTTON:
-    printf("Left button %s at (%3.2f, %3.2f)\n", buttonStat, cX, cY);
-    break;
-  case GLUT_MIDDLE_BUTTON:
-    printf("Middle button %s at (%3.2f, %3.2f)\n", buttonStat, cX, cY);
-    break;
-  case GLUT_RIGHT_BUTTON:
-    printf("Right button %s at (%3.2f, %3.2f)\n", buttonStat, cX, cY);
-    break;
+    case GLUT_LEFT_BUTTON:
+      printf("Left button %s at (%3.2f, %3.2f)\n", buttonStat, cX, cY);
+      break;
+    case GLUT_MIDDLE_BUTTON:
+      printf("Middle button %s at (%3.2f, %3.2f)\n", buttonStat, cX, cY);
+      break;
+    case GLUT_RIGHT_BUTTON:
+      printf("Right button %s at (%3.2f, %3.2f)\n", buttonStat, cX, cY);
+      break;
   }
 }
 
 // Idle event indicating that some time elapsed: do animation here
 void onIdle() {
   time = glutGet(GLUT_ELAPSED_TIME);
-  glutPostRedisplay(); // OP will call onDisply to redraw
+  glutPostRedisplay();  // OP will call onDisply to redraw
 }

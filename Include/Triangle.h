@@ -1,7 +1,8 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
-#include "framework.h"
+#include "GLPP.h"
+#include "vec3.h"
 
 class Triangle {
   unsigned int vao;

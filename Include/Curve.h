@@ -1,4 +1,5 @@
-#include "framework.h"
+#include "vec2.h"
+#include "GPUProgram.h"
 
 class Curve {
   GPUProgram *gpuProgram;

@@ -1,7 +1,8 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include "framework.h" // Include the header file for vec2 and vec4
+#include "vec4.h"
+#include "GPUProgram.h"
 
 class Object {
     unsigned int vao;   		// vertex array object id
