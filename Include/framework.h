@@ -108,4 +108,10 @@ void setup(int* argc, char *argv[]) {
   glutMainLoop();
 }
 
+//main function
+int main(int argc, char *argv[]) { 
+  setup(&argc, argv); 
+}
+
+
 #endif  // FRAMEWORK_H

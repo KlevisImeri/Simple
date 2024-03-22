@@ -2,14 +2,9 @@
 
 #include "Simple.h"
 
-int main(int argc, char *argv[]) { 
-  setup(&argc, argv); 
-
-}
-
 // global variable yuou need
+long gtime = 0;
 GPUProgram gpuProgram;
-long time = 0;
 Curve curve(&gpuProgram);
 
 // Initialization, create an OpenGL context
@@ -69,6 +64,6 @@ void onMouse(int button, int state, int pX, int pY) {
 
 // Idle event indicating that some time elapsed: do animation here
 void onIdle() {
-  time = glutGet(GLUT_ELAPSED_TIME);
+  gtime = glutGet(GLUT_ELAPSED_TIME);
   glutPostRedisplay();  // OP will call onDisply to redraw
 }

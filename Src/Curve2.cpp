@@ -74,6 +74,20 @@
 //     // -------------------------Points---------------------------//
 //
 //     // ------------------------Vertices--------------------------//
+      // double t0 = s/(double)np; //time of points p0
+      // double t = i/(double)nv; //time of vertex
+      // double t1 = (s+1)/(double)np; //time of point p1
+
+      // vec2 v0 = 0.5*(p1-p_1)/np;  //vec at p0
+      // vec2 v1 = 0.5*(p2-p0)/np;  //vec at p1
+      // //caculating the vectors for the hermite polynomial
+      // vec2 a0 = p0;
+      // vec2 a1 = v0;
+      // vec2 a2 = 3*(p1-p0)/((t1-t)*(t1-t))-(v1+2*v0)/(t1-t);
+      // vec2 a3 = 2*(p0-p1)/((t1-t)*(t1-t)*(t1-t))+(v1+v0)/((t1-t)*(t1-t));
+      
+
+      // vertices[i] = a3*(t-t0)*(t-t0)*(t-t0)+a2*(t-t0)*(t-t0)+a1*(t-t0)+a0;
 //     // ------------------------Vertices--------------------------//
 //   }
 //
