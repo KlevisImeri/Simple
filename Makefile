@@ -13,7 +13,7 @@ all: Simple run clean
 Simple: $(wildcard Src/*.cpp) $(wildcard Src/Shapes/*.cpp)
 	$(CXX) $^ -o $@  $(CXXFLAGS) $(LIBS)
 
-run: Simple.exe
+run: Simple
 	./$^
 
 clean: 
