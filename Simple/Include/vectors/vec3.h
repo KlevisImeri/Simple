@@ -3,6 +3,8 @@
 
 #include "vec2.h"
 
+namespace simple {
+
 struct vec3 {
   float x, y, z;
   vec3(float x0 = 0, float y0 = 0, float z0 = 0) {
@@ -40,5 +42,7 @@ inline vec3 cross(const vec3 &v1, const vec3 &v2) {
 inline vec3 operator*(float a, const vec3 &v) {
   return vec3(v.x * a, v.y * a, v.z * a);
 }
+
+}  // namespace simple
 
 #endif  // VEC3_H

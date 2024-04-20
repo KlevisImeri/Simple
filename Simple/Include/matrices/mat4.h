@@ -4,6 +4,8 @@
 #include "vec3.h"
 #include "vec4.h"
 
+namespace simple {
+
 struct mat4 {  // row-major matrix 4x4
 
   vec4 rows[4];
@@ -73,6 +75,8 @@ inline mat4 RotationMatrix(float angle, vec3 w) {
       vec4(w.x * w.z * (1 - c) + w.y * s, w.y * w.z * (1 - c) - w.x * s,
            c * (1 - w.z * w.z) + w.z * w.z, 0),
       vec4(0, 0, 0, 1));
+}
+
 }
 
 #endif  // MAT4_H

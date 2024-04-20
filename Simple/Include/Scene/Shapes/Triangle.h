@@ -4,6 +4,8 @@
 #include "GLPP.h"
 #include "vec3.h"
 
+namespace simple {
+
 class Triangle {
   unsigned int vao;
 
@@ -18,4 +20,6 @@ class Triangle {
   void Render();
 };
 
-#endif // TRIANGLE_H
+}  // namespace simple
+
+#endif  // TRIANGLE_H

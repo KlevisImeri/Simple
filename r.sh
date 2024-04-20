@@ -1,7 +1,6 @@
 #--------------------------MAKE------------------------------#
 make
 
-
 #-------------------------WINDOWS----------------------------#
 # rm a.exe
 # g++ Src/*.cpp Src/Shapes/*.cpp -IInclude -IShaders -lglew32 -lopengl32 -lglfw3dll -lfreeglut -lglu32

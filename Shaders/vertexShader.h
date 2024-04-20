@@ -1,3 +1,6 @@
+#ifndef VERTEXSHADER_H
+#define VERTEXSHADER_H
+
 const char *const vertexMVP = R"(
 	#version 330				// Shader 3.3
 	precision highp float;		// normal floats, makes no difference on desktop computers
@@ -38,3 +41,5 @@ const char *const vertexCurve = R"(
 		gl_Position = vec4(vp.x, vp.y, 0, 1)*MVP;
 	}
 )";
+
+#endif  // VERTEXSHADER_H

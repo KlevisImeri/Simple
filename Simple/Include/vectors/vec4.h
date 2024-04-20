@@ -1,6 +1,8 @@
 #ifndef VEC4_H
 #define VEC4_H
 
+namespace simple {
+
 struct vec4 {
   float x, y, z, w;
 
@@ -40,4 +42,5 @@ inline vec4 operator*(float a, const vec4 &v) {
   return vec4(v.x * a, v.y * a, v.z * a, v.w * a);
 }
 
+}
 #endif  // VEC4_H

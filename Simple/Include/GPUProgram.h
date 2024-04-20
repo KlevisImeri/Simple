@@ -4,26 +4,29 @@
 #include "GLPP.h"
 #include "mat4.h"
 #include "texture.h"
+using std::string;
 
+namespace simple {
 
 class GPUProgram {
   unsigned int shaderProgramId = 0;
   unsigned int vertexShader = 0, geometryShader = 0, fragmentShader = 0;
   bool waitError = true;
 
-  void getErrorInfo(unsigned int handle) {  // shader error report
+  // shader error report
+  void getErrorInfo(unsigned int handle) {
     int logLen, written;
     glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &logLen);
     if (logLen > 0) {
-      std::string log(logLen, '\0');
+      string log(logLen, '\0');
       glGetShaderInfoLog(handle, logLen, &written, &log[0]);
       printf("Shader log:\n%s", log.c_str());
       if (waitError) getchar();
     }
   }
 
-  bool checkShader(unsigned int shader,
-                   std::string message) {  // check if shader could be compiled
+  // check if shader could be compiled
+  bool checkShader(unsigned int shader, std::string message) {
     int OK;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &OK);
     if (!OK) {
@@ -34,7 +37,8 @@ class GPUProgram {
     return true;
   }
 
-  bool checkLinking(unsigned int program) {  // check if shader could be linked
+  // check if shader could be linked
+  bool checkLinking(unsigned int program) {
     int OK;
     glGetProgramiv(program, GL_LINK_STATUS, &OK);
     if (!OK) {
@@ -45,8 +49,8 @@ class GPUProgram {
     return true;
   }
 
-  int getLocation(
-      const std::string &name) {  // get the address of a GPU uniform variable
+  // get the address of a GPU uniform variable
+  int getLocation(const string &name) {
     int location = glGetUniformLocation(shaderProgramId, name.c_str());
     if (location < 0) printf("uniform %s cannot be set\n", name.c_str());
     return location;
@@ -183,5 +187,7 @@ class GPUProgram {
     if (shaderProgramId > 0) glDeleteProgram(shaderProgramId);
   }
 };
+
+}  // namespace simple
 
 #endif  // GPUPROGRAM_H

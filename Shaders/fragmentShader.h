@@ -1,3 +1,6 @@
+#ifndef FRAGMENTSHADER_H
+#define FRAGMENTSHADER_H
+
 const char *const fragmentDefault = R"(
 	#version 330			// Shader 3.3
 	precision highp float;	// normal floats, makes no difference on desktop computers
@@ -32,3 +35,5 @@ const char *const fragmentCurve = R"(
 		outColor = vec4(color, 1);
 	}
 )";
+
+#endif  // FRAMENTSHADER_H

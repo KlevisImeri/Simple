@@ -1,7 +1,9 @@
 #ifndef VEC2_H
 #define VEC2_H
 
-#include <math.h>
+#include <cmath>
+
+namespace simple {
 
 struct vec2 {
   float x, y;
@@ -23,4 +25,5 @@ inline float length(const vec2 &v) { return sqrtf(dot(v, v)); }
 inline vec2 normalize(const vec2 &v) { return v * (1 / length(v)); }
 inline vec2 operator*(float a, const vec2 &v) { return vec2(v.x * a, v.y * a); }
 
+}
 #endif  // VEC2_H

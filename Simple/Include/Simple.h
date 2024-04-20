@@ -4,7 +4,8 @@
 #include "vec.h"
 #include "mat4.h"
 #include "texture.h"
-#include "framework.h"
+#include "Window.h"
+#include "Scene.h"
 #include "fragmentShader.h"
 #include "vertexShader.h"
 #include "Curve.h"
@@ -12,5 +13,7 @@
 #include "Object.h"
 #include "Triangle.h"
 #include "GPUProgram.h"
+#include "HelperFunctions.h"
+
 
 #endif // SIMPLE_H
