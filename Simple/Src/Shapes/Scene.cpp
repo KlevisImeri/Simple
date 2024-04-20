@@ -1,5 +1,6 @@
-#include "../../Include/Scene/Scene.h"
-#include "../../Include/Window.h"
+#include "Scene.h"
+
+#include "Window.h"
 
 namespace simple {
 

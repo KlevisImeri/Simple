@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "GLPP.h"
-#include "../../Include/Scene/Scene.h"
+#include "Scene.h"
 #include "vec2.h"
 
 using std::string;

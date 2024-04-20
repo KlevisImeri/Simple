@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/Simple/Include/Scene",
+                "${workspaceFolder}/Simple/Include/Scene/Shapes",
+                "${workspaceFolder}/Simple/Include/matrices",
+                "${workspaceFolder}/Simple/Include/vectors",
+                "${workspaceFolder}/Simple/Shaders"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "D:\\Program Files (x86)\\C_compilers\\mingw32\\bin\\gcc.exe",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "windows-gcc-x86"
+        }
+    ],
+    "version": 4
+}

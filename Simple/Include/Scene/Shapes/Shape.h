@@ -16,6 +16,7 @@ class Shape {
   unsigned vao;
 
  public:
+  // virtual ~Shape() = 0;
   virtual void Render() = 0;
   //probaly gonna belong to object
   virtual void onKeyboard(unsigned char key, vec2 pV) = 0;
