@@ -7,6 +7,32 @@ using std::vector;
 namespace simple {
 
 class Curve : public Shape {
+ public:
+  static inline GPUProgram curveGPUProgram;
+
+ private:
+  /*----------Shaders-----------*/
+  static inline const char *const vertex = R"(
+    #version 330
+    precision highp float;
+    uniform mat4 MVP;
+    layout(location = 0) in vec2 vp;
+    void main() {
+      gl_Position = vec4(vp.x, vp.y, 0, 1)*MVP;
+    }
+  )";
+  static inline const char *const fragment = R"(
+	  #version 330
+	  precision highp float;
+	  uniform vec3 color;
+	  out vec4 outColor;
+	  void main() {
+		  outColor = vec4(color, 1);
+	  }
+  )";
+  /*--------------------------*/
+
+ private:
   /*---------VAO|VBO----------*/
   unsigned vaoPoints, vboPoints;
   unsigned vaoVertices, vboVertices;
@@ -31,6 +57,11 @@ class Curve : public Shape {
         sp(NULL),
         colorLine(colorLine / 255),
         colorPoint(colorPoint / 255) {
+    if (!curveGPUProgram.getId())  // id=0 mean no program there
+      curveGPUProgram.create(vertex, fragment, "outColor");
+
+    gpuProgram = &curveGPUProgram;
+
     points.resize(np);
     vertices.resize(nv);
 
@@ -46,12 +77,12 @@ class Curve : public Shape {
       double alpha = ((float)i * 2 * M_PI) / np;
       points[i] = vec2(r * cos(alpha), r * sin(alpha));
     }
-    upload2F(vaoPoints, vboPoints, points);
+    upload2F(vaoPoints, vboPoints, points, 0);
     /* --------------------------------------------------------- */
 
     /* ------------------------Vertices--------------------------*/
     CatmullRom();
-    upload2F(vaoVertices, vboVertices, vertices);
+    upload2F(vaoVertices, vboVertices, vertices,0);
     /* --------------------------------------------------------- */
   }
 
@@ -102,7 +133,7 @@ class Curve : public Shape {
     }
   }
 
-  void Render() override {
+  void thisRender() override {
     glBindVertexArray(vboVertices);
     gpuProgram->setUniform(colorLine, "color");
     glDrawArrays(GL_LINE_LOOP, 0, nv);
@@ -123,9 +154,9 @@ class Curve : public Shape {
     // Update the buffers
     if (sp) {
       *sp = cP;
-      upload2F(vaoPoints, vboPoints, points);
+      upload2F(vaoPoints, vboPoints, points,0);
       CatmullRom();
-      upload2F(vaoVertices, vboVertices, vertices);
+      upload2F(vaoVertices, vboVertices, vertices,0);
     }
   }
 

@@ -9,6 +9,7 @@ vector<Window*> Window::windows;
 int Window::cW;
 int Window::WIDTH;
 int Window::HEIGHT;
+long Window::time;
 
 vec2 Window::Viewport2Window(vec2 pixel) {
   return {2.0f * pixel.x / WIDTH - 1, 1.0f - 2.0f * pixel.y / HEIGHT};
@@ -19,19 +20,19 @@ void Window::onDisplay() { windows[cW]->scenes[windows[cW]->cS]->onDisplay(); }
 void Window::onIdle() { windows[cW]->scenes[windows[cW]->cS]->onIdle(); }
 
 void Window::onKeyboard(unsigned char key, int pX, int pY) {
-  windows[cW]->scenes[windows[cW]->cS]->onKeyboard(key, {pX, pY});
+  windows[cW]->scenes[windows[cW]->cS]->onKeyboard(key, {(float)pX, (float)pY});
 }
 
 void Window::onKeyboardUp(unsigned char key, int pX, int pY) {
-  windows[cW]->scenes[windows[cW]->cS]->onKeyboardUp(key, {pX, pY});
+  windows[cW]->scenes[windows[cW]->cS]->onKeyboardUp(key, {(float)pX, (float)pY});
 }
 
 void Window::onMouseMotion(int pX, int pY) {
-  windows[cW]->scenes[windows[cW]->cS]->onMouseMotion({pX, pY});
+  windows[cW]->scenes[windows[cW]->cS]->onMouseMotion({(float)pX, (float)pY});
 }
 
 void Window::onMouse(int button, int state, int pX, int pY) {
-  windows[cW]->scenes[windows[cW]->cS]->onMouse(button, state, {pX, pY});
+  windows[cW]->scenes[windows[cW]->cS]->onMouse(button, state, {(float)pX, (float)pY});
 }
 
 Window::Window(std::string name, unsigned int width, unsigned int height)
@@ -39,6 +40,7 @@ Window::Window(std::string name, unsigned int width, unsigned int height)
   setGlutGlewGL();
   setGlSettings();
 
+  cS = 0;
   ID = windows.size();
   windows.push_back(this);
 

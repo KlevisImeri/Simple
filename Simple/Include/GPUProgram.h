@@ -9,6 +9,7 @@ using std::string;
 namespace simple {
 
 class GPUProgram {
+ private:
   unsigned int shaderProgramId = 0;
   unsigned int vertexShader = 0, geometryShader = 0, fragmentShader = 0;
   bool waitError = true;

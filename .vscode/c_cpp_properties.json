@@ -5,7 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/Simple/Include/Scene",
-                "${workspaceFolder}/Simple/Include/Scene/Shapes",
+                "${workspaceFolder}/Simple/Include/Shapes",
                 "${workspaceFolder}/Simple/Include/matrices",
                 "${workspaceFolder}/Simple/Include/vectors",
                 "${workspaceFolder}/Simple/Shaders"

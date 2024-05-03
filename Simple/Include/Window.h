@@ -8,6 +8,7 @@
 #include "Scene.h"
 #include "vec2.h"
 
+
 using std::string;
 using std::vector;
 
@@ -19,6 +20,7 @@ class Window {
   static int cW;
   static int WIDTH;
   static int HEIGHT;
+  static long time;
 
   static vec2 Viewport2Window(vec2 pixel);
 

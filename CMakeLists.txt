@@ -4,7 +4,7 @@
   project(Simple)
 
   # Define variables
-  set(CMAKE_CXX_STANDARD 11)
+  set(CMAKE_CXX_STANDARD 17)
   set(CMAKE_CXX_STANDARD_REQUIRED True)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")  # Add compiler flags
 
@@ -21,10 +21,14 @@
       Simple/Include
       Simple/Include/matrices
       Simple/Include/Scene
-      Simple/Include/Scene/Shapes
+      Simple/Include/Shapes
       Simple/Include/vectors
       Simple/Shaders
   )
+
+  # Copy texture files
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Src/brickwall.bmp ${CMAKE_CURRENT_BINARY_DIR}/brickwall.bmp COPYONLY)
+  include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 
   # Link libraries based on platform
