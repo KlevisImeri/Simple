@@ -17,6 +17,11 @@ struct vec3 {
     y = v.y;
     z = 0;
   }
+  vec3(vec4 v) {
+    x = v.x;
+    y = v.x;
+    z = v.x;
+  }
   vec3 operator*(float a) const { return vec3(x * a, y * a, z * a); }
   vec3 operator/(float a) const { return vec3(x / a, y / a, z / a); }
   vec3 operator+(const vec3 &v) const {

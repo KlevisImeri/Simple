@@ -12,6 +12,12 @@ struct vec4 {
     z = z0;
     w = w0;
   }
+  vec4(vec3 vec3,  float w0) {
+    x = vec3.x;
+    y = vec3.y;
+    z = vec3.z;
+    w = w0;
+  }
   float &operator[](int j) { return *(&x + j); }
   float operator[](int j) const { return *(&x + j); }
 

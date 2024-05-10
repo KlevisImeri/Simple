@@ -15,6 +15,8 @@ mat4 Shape::Animate() {
       alpha = M_PI / 4.0 * cos(Window::time / 1000.0);
       return RotationMatrix(alpha, vec3(0.0, 0.0, 1.0)) * T;
       break;
+    default:
+      return T;
   }
 }
 

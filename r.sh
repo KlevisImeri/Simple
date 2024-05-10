@@ -1,6 +1,8 @@
 #--------------------------Cmake------------------------------#
+clear
 cmake -G "MinGW Makefiles" -B build
 cd build
+make clean
 make run
 
 #--------------------------MAKE------------------------------#

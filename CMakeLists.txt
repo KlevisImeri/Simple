@@ -19,10 +19,10 @@
   # Include directories for the target "program"
   target_include_directories(program PRIVATE
       Simple/Include
-      Simple/Include/matrices
+      Simple/Include/Math
+      Simple/Include/Math/vectors
       Simple/Include/Scene
       Simple/Include/Shapes
-      Simple/Include/vectors
       Simple/Shaders
   )
 

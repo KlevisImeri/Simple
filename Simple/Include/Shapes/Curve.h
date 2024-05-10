@@ -133,7 +133,7 @@ class Curve : public Shape {
     }
   }
 
-  void thisRender() override {
+  void Draw() override {
     glBindVertexArray(vboVertices);
     gpuProgram->setUniform(colorLine, "color");
     glDrawArrays(GL_LINE_LOOP, 0, nv);

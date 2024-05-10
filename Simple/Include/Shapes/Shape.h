@@ -5,13 +5,14 @@
 #include "GPUProgram.h"
 #include "vec2.h"
 #include "vector"
+#include "Intersectable.h"
 using std::vector;
 
 namespace simple {
 
 enum Animation { NOT_MOVING, ROTATING, UP_AND_DOWN };
 
-class Shape {
+class Shape : public Intersectable {
  protected:
   unsigned vao;
   Animation animation;
@@ -48,7 +49,7 @@ class Shape {
       gpuProgram->Use();
       gpuProgram->setUniform(Animate(), "MVP");
     }
-    thisRender();
+    Draw();
     for (Shape* s : shapes) {
       s->Render(T);
     }
@@ -60,19 +61,19 @@ class Shape {
       gpuProgram->Use();
       gpuProgram->setUniform(Animate()*pT, "MVP");
     }
-    thisRender();
+    Draw();
     for (Shape* s : shapes) {
       s->Render(T);
     }
   };
 
-  virtual void thisRender() = 0;
+  virtual void Draw() = 0;
 
   // probaly gonna belong to object
-  virtual void onKeyboard(unsigned char key, vec2 pV) = 0;
-  virtual void onKeyboardUp(unsigned char key, vec2 pV) = 0;
-  virtual void onMouseMotion(vec2 pV) = 0;
-  virtual void onMouse(int button, int state, vec2 pV) = 0;
+  virtual void onKeyboard(unsigned char key, vec2 pV) {}
+  virtual void onKeyboardUp(unsigned char key, vec2 pV) {}
+  virtual void onMouseMotion(vec2 pV) {}
+  virtual void onMouse(int button, int state, vec2 pV) {}
 
   mat4 Animate();
 };

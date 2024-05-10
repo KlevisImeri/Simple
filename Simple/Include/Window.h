@@ -48,6 +48,7 @@ class Window {
   void setGlSettings();
   void setGlutGlewGL();
   void printGL();
+  void 
 
   static void glutDisplayWrapper();
   static void glutIdleWrapper();

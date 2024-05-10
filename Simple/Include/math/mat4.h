@@ -12,8 +12,9 @@ struct mat4 {  // row-major matrix 4x4
 
  public:
   mat4() {}
-  mat4(float m00, float m01, float m02, float m03, float m10, float m11,
-       float m12, float m13, float m20, float m21, float m22, float m23,
+  mat4(float m00, float m01, float m02, float m03, 
+       float m10, float m11, float m12, float m13, 
+       float m20, float m21, float m22, float m23,
        float m30, float m31, float m32, float m33) {
     rows[0][0] = m00;
     rows[0][1] = m01;
@@ -44,6 +45,14 @@ struct mat4 {  // row-major matrix 4x4
   operator float *() const { return (float *)this; }
 };
 
+inline mat4 T(mat4 M) {
+    return mat4(
+      M.rows[0][0], M.rows[1][0], M.rows[2][0], M.rows[3][0],
+      M.rows[0][1], M.rows[1][1], M.rows[2][1], M.rows[3][1],
+      M.rows[1][2], M.rows[2][2], M.rows[2][2], M.rows[3][2],
+      M.rows[0][3], M.rows[1][3], M.rows[2][3], M.rows[3][3]
+    );
+  }
 inline vec4 operator*(const vec4 &v, const mat4 &mat) {
   return v[0] * mat[0] + v[1] * mat[1] + v[2] * mat[2] + v[3] * mat[3];
 }
@@ -53,6 +62,7 @@ inline mat4 operator*(const mat4 &left, const mat4 &right) {
   for (int i = 0; i < 4; i++) result.rows[i] = left.rows[i] * right;
   return result;
 }
+
 
 inline mat4 TranslateMatrix(vec3 t) {
   return mat4(vec4(1, 0, 0, 0), vec4(0, 1, 0, 0), vec4(0, 0, 1, 0),
