@@ -24,7 +24,8 @@ void Window::onKeyboard(unsigned char key, int pX, int pY) {
 }
 
 void Window::onKeyboardUp(unsigned char key, int pX, int pY) {
-  windows[cW]->scenes[windows[cW]->cS]->onKeyboardUp(key, {(float)pX, (float)pY});
+  windows[cW]->scenes[windows[cW]->cS]->onKeyboardUp(key,
+                                                     {(float)pX, (float)pY});
 }
 
 void Window::onMouseMotion(int pX, int pY) {
@@ -32,7 +33,8 @@ void Window::onMouseMotion(int pX, int pY) {
 }
 
 void Window::onMouse(int button, int state, int pX, int pY) {
-  windows[cW]->scenes[windows[cW]->cS]->onMouse(button, state, {(float)pX, (float)pY});
+  windows[cW]->scenes[windows[cW]->cS]->onMouse(button, state,
+                                                {(float)pX, (float)pY});
 }
 
 Window::Window(std::string name, unsigned int width, unsigned int height)
@@ -62,6 +64,11 @@ void Window::run() {
   HEIGHT = height;
   glutMainLoop();
 }
+
+vector<vec4> Window::RayTrace() {
+  return scenes[cS]->render();
+}
+
 
 void Window::set(Scene* scene) {
   if (scene->ID < scenes.size()) cS = scene->ID;

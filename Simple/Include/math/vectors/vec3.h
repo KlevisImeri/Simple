@@ -2,6 +2,7 @@
 #define VEC3_H
 
 #include "vec2.h"
+#include "vec4.h"
 
 namespace simple {
 

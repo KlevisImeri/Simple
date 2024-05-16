@@ -3,9 +3,9 @@
 
 #include "GLPP.h"
 #include "GPUProgram.h"
+#include "Intersectable.h"
 #include "vec2.h"
 #include "vector"
-#include "Intersectable.h"
 using std::vector;
 
 namespace simple {
@@ -20,7 +20,8 @@ class Shape : public Intersectable {
   vector<Shape*> shapes;
   GPUProgram* gpuProgram;
 
-  void upload2F(unsigned vao, unsigned vbo, const vector<vec2>& vertices, int i) {
+  void upload2F(unsigned vao, unsigned vbo, const vector<vec2>& vertices,
+                int i) {
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * vertices.size(),
@@ -59,7 +60,7 @@ class Shape : public Intersectable {
     Animate();
     if (gpuProgram) {
       gpuProgram->Use();
-      gpuProgram->setUniform(Animate()*pT, "MVP");
+      gpuProgram->setUniform(Animate() * pT, "MVP");
     }
     Draw();
     for (Shape* s : shapes) {
@@ -67,7 +68,7 @@ class Shape : public Intersectable {
     }
   };
 
-  virtual void Draw() = 0;
+  virtual void Draw() {}
 
   // probaly gonna belong to object
   virtual void onKeyboard(unsigned char key, vec2 pV) {}

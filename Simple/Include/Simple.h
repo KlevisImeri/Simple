@@ -18,7 +18,6 @@
 #include "HelperFunctions.h"
 #include "Intersectable.h"
 
-
 #include "Light.h"
 #include "Ray.h"
 #include "Camera.h"

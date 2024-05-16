@@ -35,8 +35,7 @@ class TexturedQuad : public Shape {
   vector<vec2> verteces = {{-0.5, -0.5}, {0.5, -0.5}, {-0.5, 0.5}, {0.5, 0.5}};
   vec2* sVertex;  // selected vertex
 
- public:
-  TexturedQuad() {
+  void initialize() {
     if (!textureQuadGPUprogram.getId()) {
       textureQuadGPUprogram.create(vertex, fragment, "outColor");
     }
@@ -47,8 +46,19 @@ class TexturedQuad : public Shape {
         {0.0, 0.0}, {4.0, 0.0}, {0.0, 4.0}, {4.0, 4.0}};
     upload2F(cvao, vbo[0], verteces, 0);
     upload2F(cvao, vbo[1], textureCordinates, 1);
-    texture = new Texture("brickwall.bmp");
   }
+
+ public:
+  TexturedQuad(string path) {
+    initialize();
+    texture = new Texture(path);
+  }
+
+  TexturedQuad(vector<vec4> image) {
+    initialize();
+    texture = new Texture(Window::WIDTH, Window::HEIGHT, image);
+  }
+
 
   ~TexturedQuad() { delete texture; }
 
@@ -64,6 +74,7 @@ class TexturedQuad : public Shape {
       upload2F(cvao, vbo[0], verteces, 0);
     }
   };
+
   void onMouse(int button, int state, vec2 pV) override {
     float R = 0.01;
     switch (state) {

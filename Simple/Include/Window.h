@@ -35,6 +35,7 @@ class Window {
          unsigned int height = 600);
   ~Window();
   void run();
+  vector<vec4> RayTrace();
   void set(Scene* scene);
   void add(Scene* scene);
 
@@ -48,7 +49,6 @@ class Window {
   void setGlSettings();
   void setGlutGlewGL();
   void printGL();
-  void 
 
   static void glutDisplayWrapper();
   static void glutIdleWrapper();

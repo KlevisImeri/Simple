@@ -24,7 +24,7 @@ class Intersectable {
   Material* material;
 
  public:
-  virtual Hit intersect(const Ray& ray) = 0;
+  virtual Hit intersect(const Ray& ray) {};
 };
 
 }  // namespace simple

@@ -1,13 +1,17 @@
 #pragma once
-#include "vec3.h"
 #include "Intersectable.h"
+#include "vec3.h"
 namespace simple {
 
 struct Sphere : public Shape {
   vec3 center;
   float radius;
 
-  Sphere(const vec3& _center, float _radius, Material* _material) {
+  Sphere(
+      vec3 _center = {0,0,1}, 
+      float _radius = 1, 
+      Material* _material = new Material({40,40,40},{20,20,20}, 10)
+      ) {
     center = _center;
     radius = _radius;
     material = _material;
