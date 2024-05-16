@@ -5,80 +5,13 @@
 
 namespace simple {
 
-vector<Window*> Window::windows;
-int Window::cW;
-int Window::WIDTH;
-int Window::HEIGHT;
+/*----------------------Static-----------------------*/
+Window* Window::sWindow;
+bool Window::initGlutGlew = false;
 long Window::time;
+/*----------------------Static-----------------------*/
 
-vec2 Window::Viewport2Window(vec2 pixel) {
-  return {2.0f * pixel.x / WIDTH - 1, 1.0f - 2.0f * pixel.y / HEIGHT};
-}
-
-void Window::onDisplay() { windows[cW]->scenes[windows[cW]->cS]->onDisplay(); }
-
-void Window::onIdle() { windows[cW]->scenes[windows[cW]->cS]->onIdle(); }
-
-void Window::onKeyboard(unsigned char key, int pX, int pY) {
-  windows[cW]->scenes[windows[cW]->cS]->onKeyboard(key, {(float)pX, (float)pY});
-}
-
-void Window::onKeyboardUp(unsigned char key, int pX, int pY) {
-  windows[cW]->scenes[windows[cW]->cS]->onKeyboardUp(key,
-                                                     {(float)pX, (float)pY});
-}
-
-void Window::onMouseMotion(int pX, int pY) {
-  windows[cW]->scenes[windows[cW]->cS]->onMouseMotion({(float)pX, (float)pY});
-}
-
-void Window::onMouse(int button, int state, int pX, int pY) {
-  windows[cW]->scenes[windows[cW]->cS]->onMouse(button, state,
-                                                {(float)pX, (float)pY});
-}
-
-Window::Window(std::string name, unsigned int width, unsigned int height)
-    : name(name), width(width), height(height) {
-  setGlutGlewGL();
-  setGlSettings();
-
-  cS = 0;
-  ID = windows.size();
-  windows.push_back(this);
-
-  glutDisplayFunc(glutDisplayWrapper);
-  glutMouseFunc(glutMouseWrapper);
-  glutIdleFunc(glutIdleWrapper);
-  glutKeyboardFunc(glutKeyboardWrapper);
-  glutKeyboardUpFunc(glutKeyboardUpWrapper);
-  glutMotionFunc(glutMouseMotionWrapper);
-}
-
-Window::~Window() {
-  for (Scene* s : scenes) delete s;
-}
-
-void Window::run() {
-  cW = ID;
-  WIDTH = width;
-  HEIGHT = height;
-  glutMainLoop();
-}
-
-vector<vec4> Window::RayTrace() {
-  return scenes[cS]->render();
-}
-
-
-void Window::set(Scene* scene) {
-  if (scene->ID < scenes.size()) cS = scene->ID;
-}
-
-void Window::add(Scene* scene) {
-  scene->ID = scenes.size();
-  scenes.push_back(scene);
-}
-
+/*---------------------------------------------------*/
 void Window::setGlSettings() {
   glViewport(0, 0, width, height);
   // glEnable(GL_DEPTH_TEST);
@@ -98,17 +31,18 @@ void Window::setGlSettings() {
   glLineWidth(5);
 }
 
-void Window::setGlutGlewGL() {
-  char* argv[] = {};
-  int argc = 0;
-  glutInit(&argc, argv);
-  glutInitWindowSize(width, height);
-  glutInitWindowPosition(100, 100);
-  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-  glutCreateWindow(name.c_str());
-  glewExperimental = true;
-  glewInit();
-  printGL();
+void Window::setGlutGlew() {
+  if (!initGlutGlew) {
+    char *argv[] = {};
+    int argc = 0;
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+    glutInitWindowSize(width, height);
+    glutInitWindowPosition(100, 100);
+    glewExperimental = true;
+    glewInit();
+    printGL();
+  }
 }
 
 void Window::printGL() {
@@ -122,22 +56,46 @@ void Window::printGL() {
   printf("GLSL Version : %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 }
 
-void Window::glutDisplayWrapper() { onDisplay(); }
+void Window::onDisplay() { sScene->onDisplay(); }
+void Window::onIdle() { sScene->onIdle(); }
+void Window::onKeyboard(unsigned char key, int pX, int pY) { sScene->onKeyboard(key, {(float)pX, (float)pY}); }
+void Window::onKeyboardUp(unsigned char key, int pX, int pY) { sScene->onKeyboardUp(key, {(float)pX, (float)pY}); }
+void Window::onMouseMotion(int pX, int pY) { sScene->onMouseMotion({(float)pX, (float)pY}); }
+void Window::onMouse(int button, int state, int pX, int pY) { sScene->onMouse(button, state, {(float)pX, (float)pY}); }
+/*---------------------------------------------------*/
 
-void Window::glutIdleWrapper() { onIdle(); }
+/*---------------------------------------------------*/
+Window::Window(std::string name, unsigned int width, unsigned int height) : name(name), width(width), height(height) {
+  setGlutGlew();
+  setGlSettings();
 
-void Window::glutKeyboardWrapper(unsigned char key, int pX, int pY) {
-  onKeyboard(key, pX, pY);
+  glutCreateWindow(name.c_str());
+  Window* s = this;
+  glutDisplayFunc([]() { sWindow->onDisplay(); });
+  glutIdleFunc([]() { sWindow->onIdle(); });
+  glutKeyboardFunc([](unsigned char key, int x, int y) { sWindow->onKeyboard(key, x, y); });
+  glutKeyboardUpFunc([](unsigned char key, int x, int y) { sWindow->onKeyboardUp(key, x, y); });
+  glutMouseFunc([](int button, int state, int x, int y) { sWindow->onMouse(button, state, x, y); });
+  glutMotionFunc([](int x, int y) { sWindow->onMouseMotion(x, y); });
 }
 
-void Window::glutKeyboardUpWrapper(unsigned char key, int pX, int pY) {
-  onKeyboardUp(key, pX, pY);
+Window::~Window() {
+  for (Scene *s : scenes) delete s;
+}
+/*---------------------------------------------------*/
+
+/*---------------------------------------------------*/
+void Window::run() {
+  glutMainLoop();
 }
 
-void Window::glutMouseMotionWrapper(int pX, int pY) { onMouseMotion(pX, pY); }
-
-void Window::glutMouseWrapper(int button, int state, int pX, int pY) {
-  onMouse(button, state, pX, pY);
+void Window::set(unsigned int index) {
+  if (index < scenes.size()) sScene = scenes[index];
 }
+
+void Window::add(Scene *scene) {
+  scenes.push_back(scene);
+}
+/*---------------------------------------------------*/
 
 }  // namespace simple

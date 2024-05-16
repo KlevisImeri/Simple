@@ -19,6 +19,7 @@ class Camera {
     right = normalize(cross(vup, w)) * focus * tanf(fov / 2);
     up = normalize(cross(w, right)) * focus * tanf(fov / 2);
   }
+  
   Ray getRay(int X, int Y) {
     vec3 dir = lookat + right * (2.0f * (X + 0.5f) / Window::WIDTH - 1) +
                up * (2.0f * (Y + 0.5f) / Window::HEIGHT - 1) - eye;

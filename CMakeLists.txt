@@ -25,6 +25,8 @@
       Simple/Include/Shapes
       Simple/Shaders
   )
+  
+  add_subdirectory(Simple/Include)
 
   # Copy texture files
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Src/brickwall.bmp ${CMAKE_CURRENT_BINARY_DIR}/brickwall.bmp COPYONLY)

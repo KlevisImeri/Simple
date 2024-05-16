@@ -17,6 +17,7 @@
 #include "GPUProgram.h"
 #include "HelperFunctions.h"
 #include "Intersectable.h"
+#include "Scene2D.h"
 
 #include "Light.h"
 #include "Ray.h"

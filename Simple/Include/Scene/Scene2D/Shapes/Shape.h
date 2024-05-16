@@ -1,5 +1,4 @@
-#ifndef SHAPE_H
-#define SHAPE_H
+#pragma once
 
 #include "GLPP.h"
 #include "GPUProgram.h"
@@ -12,7 +11,7 @@ namespace simple {
 
 enum Animation { NOT_MOVING, ROTATING, UP_AND_DOWN };
 
-class Shape : public Intersectable {
+class Shape2D : public Intersectable {
  protected:
   unsigned vao;
   Animation animation;
@@ -20,12 +19,10 @@ class Shape : public Intersectable {
   vector<Shape*> shapes;
   GPUProgram* gpuProgram;
 
-  void upload2F(unsigned vao, unsigned vbo, const vector<vec2>& vertices,
-                int i) {
+  void upload2F(unsigned vao, unsigned vbo, const vector<vec2>& vertices, int i) {
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * vertices.size(),
-                 vertices.data(), GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * vertices.size(), vertices.data(), GL_DYNAMIC_DRAW);
     glEnableVertexAttribArray(i);
     glVertexAttribPointer(i, 2, GL_FLOAT, GL_FALSE, 0, NULL);
   }
@@ -80,5 +77,3 @@ class Shape : public Intersectable {
 };
 
 }  // namespace simple
-
-#endif  // SHAPE_H

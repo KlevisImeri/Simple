@@ -1,9 +1,11 @@
 #pragma once
+
 #include "mat4.h"
-#include "Shape.h"
+#include "Intersectable.h"
+
 namespace simple {
 
-class Quadratic : Shape {
+class Quadratic : public Intersectable {
   mat4 Q;
 
  public: 

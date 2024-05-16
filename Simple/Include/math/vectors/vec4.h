@@ -1,8 +1,7 @@
 
-#ifndef VEC4_H
-#define VEC4_H
+#pragma once
 
-#include "vec3.h"
+// #include "vec3.h"
 
 namespace simple {
 
@@ -15,12 +14,12 @@ struct vec4 {
     z = z0;
     w = w0;
   }
-  // vec4(vec3 v3, float w0) {
-  //   x = v3.x;
-  //   y = v3.y;
-  //   z = v3.z;
-  //   w = w0;
-  // }
+  vec4(vec3 v3, float w0) {
+    x = v3.x;
+    y = v3.y;
+    z = v3.z;
+    w = w0;
+  }
   float &operator[](int j) { return *(&x + j); }
   float operator[](int j) const { return *(&x + j); }
 
@@ -52,4 +51,3 @@ inline vec4 operator*(float a, const vec4 &v) {
 }
 
 }  // namespace simple
-#endif  // VEC4_H

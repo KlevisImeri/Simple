@@ -3,12 +3,13 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/Simple/Include/Scene",
-                "${workspaceFolder}/Simple/Include/Shapes",
-                "${workspaceFolder}/Simple/Include/math",
-                "${workspaceFolder}/Simple/Include/math/vectors",
-                "${workspaceFolder}/Simple/Shaders"
+                "${workspaceFolder}/**"
+                // "${workspaceFolder}/Simple/Include/Scene",
+                // "${workspaceFolder}/Simple/Include/Scene/2DScene",
+                // "${workspaceFolder}/Simple/Include/Shapes",
+                // "${workspaceFolder}/Simple/Include/math",
+                // "${workspaceFolder}/Simple/Include/math/vectors",
+                // "${workspaceFolder}/Simple/Shaders"
             ],
             "defines": [
                 "_DEBUG",

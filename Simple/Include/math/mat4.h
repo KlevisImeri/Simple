@@ -1,5 +1,4 @@
-#ifndef MAT4_H
-#define MAT4_H
+#pragma once
 
 #include "vec3.h"
 #include "vec4.h"
@@ -87,6 +86,8 @@ inline mat4 RotationMatrix(float angle, vec3 w) {
       vec4(0, 0, 0, 1));
 }
 
+vec2 Viewport2Window(int WIDTH,   int HEIGHT, vec2 pixel) { 
+  return {2.0f * pixel.x / WIDTH - 1, 1.0f - 2.0f * pixel.y / HEIGHT}; 
 }
 
-#endif  // MAT4_H
+}

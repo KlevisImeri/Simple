@@ -1,5 +1,4 @@
-#ifndef VEC3_H
-#define VEC3_H
+#pragma once
 
 #include "vec2.h"
 #include "vec4.h"
@@ -50,5 +49,3 @@ inline vec3 operator*(float a, const vec3 &v) {
 }
 
 }  // namespace simple
-
-#endif  // VEC3_H

@@ -1,5 +1,6 @@
 {
   //make files need a tab and not spaces
+  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, TabWidth: 2, ColumnLimit: 200}",
   "[makefile]": {
     "editor.insertSpaces": false,
     "editor.tabSize": 4
