@@ -3,10 +3,12 @@
 #include <GL/freeglut.h>
 #include <stdio.h>
 
+#include "mat4.h"
+
 namespace simple {
 
 /*----------------------Static-----------------------*/
-Window* Window::sWindow;
+Window *Window::sWindow;
 bool Window::initGlutGlew = false;
 long Window::time;
 /*----------------------Static-----------------------*/
@@ -32,17 +34,16 @@ void Window::setGlSettings() {
 }
 
 void Window::setGlutGlew() {
-  if (!initGlutGlew) {
-    char *argv[] = {};
-    int argc = 0;
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-    glutInitWindowSize(width, height);
-    glutInitWindowPosition(100, 100);
-    glewExperimental = true;
-    glewInit();
-    printGL();
-  }
+  if (initGlutGlew) return;
+  char *argv[] = {};
+  int argc = 0;
+  glutInit(&argc, argv);
+  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+  glutInitWindowSize(width, height);
+  glutInitWindowPosition(100, 100);
+  glewExperimental = true;
+  printGL();
+  initGlutGlew = true;
 }
 
 void Window::printGL() {
@@ -56,12 +57,26 @@ void Window::printGL() {
   printf("GLSL Version : %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 }
 
-void Window::onDisplay() { sScene->onDisplay(); }
-void Window::onIdle() { sScene->onIdle(); }
-void Window::onKeyboard(unsigned char key, int pX, int pY) { sScene->onKeyboard(key, {(float)pX, (float)pY}); }
-void Window::onKeyboardUp(unsigned char key, int pX, int pY) { sScene->onKeyboardUp(key, {(float)pX, (float)pY}); }
-void Window::onMouseMotion(int pX, int pY) { sScene->onMouseMotion({(float)pX, (float)pY}); }
-void Window::onMouse(int button, int state, int pX, int pY) { sScene->onMouse(button, state, {(float)pX, (float)pY}); }
+void Window::onDisplay() {
+  if (sScene) sScene->onDisplay();
+}
+void Window::onIdle() {
+  time = glutGet(GLUT_ELAPSED_TIME);
+  if (sScene) sScene->onIdle();
+  glutPostRedisplay();  // OP will call onDisplay to redraw
+}
+void Window::onKeyboard(unsigned char key, int pX, int pY) {
+  if (sScene) sScene->onKeyboard(key, Viewport2Window(width, height, {(float)pX, (float)pY}));
+}
+void Window::onKeyboardUp(unsigned char key, int pX, int pY) {
+  if (sScene) sScene->onKeyboardUp(key, Viewport2Window(width, height, {(float)pX, (float)pY}));
+}
+void Window::onMouseMotion(int pX, int pY) {
+  if (sScene) sScene->onMouseMotion(Viewport2Window(width, height, {(float)pX, (float)pY}));
+}
+void Window::onMouse(int button, int state, int pX, int pY) {
+  if (sScene) sScene->onMouse(button, state, Viewport2Window(width, height, {(float)pX, (float)pY}));
+}
 /*---------------------------------------------------*/
 
 /*---------------------------------------------------*/
@@ -70,8 +85,12 @@ Window::Window(std::string name, unsigned int width, unsigned int height) : name
   setGlSettings();
 
   glutCreateWindow(name.c_str());
-  Window* s = this;
-  glutDisplayFunc([]() { sWindow->onDisplay(); });
+  glewInit();
+  sWindow = this;
+  glutDisplayFunc([]() { 
+    printf("%s", sWindow);
+    sWindow->onDisplay(); 
+    });
   glutIdleFunc([]() { sWindow->onIdle(); });
   glutKeyboardFunc([](unsigned char key, int x, int y) { sWindow->onKeyboard(key, x, y); });
   glutKeyboardUpFunc([](unsigned char key, int x, int y) { sWindow->onKeyboardUp(key, x, y); });
@@ -85,9 +104,7 @@ Window::~Window() {
 /*---------------------------------------------------*/
 
 /*---------------------------------------------------*/
-void Window::run() {
-  glutMainLoop();
-}
+void Window::run() { glutMainLoop(); }
 
 void Window::set(unsigned int index) {
   if (index < scenes.size()) sScene = scenes[index];
@@ -95,6 +112,7 @@ void Window::set(unsigned int index) {
 
 void Window::add(Scene *scene) {
   scenes.push_back(scene);
+  set(scenes.size() - 1);
 }
 /*---------------------------------------------------*/
 

@@ -1,5 +1,4 @@
-#ifndef GPUPROGRAM_H
-#define GPUPROGRAM_H
+#pragma once
 
 #include "GLPP.h"
 #include "mat4.h"
@@ -80,7 +79,10 @@ class GPUProgram {
               const char *const fragmentShaderOutputName,
               const char *const geometryShaderSource = nullptr) {
     // Create vertex shader from string
-    if (vertexShader == 0) vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    if (vertexShader == 0) {
+      printf("Creating Shader!");
+      vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    }
     if (!vertexShader) {
       printf("Error in vertex shader creation\n");
       exit(1);
@@ -190,5 +192,3 @@ class GPUProgram {
 };
 
 }  // namespace simple
-
-#endif  // GPUPROGRAM_H

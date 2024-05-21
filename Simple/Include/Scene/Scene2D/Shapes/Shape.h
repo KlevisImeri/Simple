@@ -11,69 +11,36 @@ namespace simple {
 
 enum Animation { NOT_MOVING, ROTATING, UP_AND_DOWN };
 
-class Shape2D : public Intersectable {
+class Shape {
  protected:
-  unsigned vao;
-  Animation animation;
-  mat4 T;
-  vector<Shape*> shapes;
-  GPUProgram* gpuProgram;
+  unsigned vao;             // Vao of the shape
+  Animation animation;      // Animation type
+  mat4 T;                   // Where the shape is on the screeen
+  vector<Shape*> shapes;  // Shapes it has
+  GPUProgram* gpuProgram;   // The Shader
 
-  void upload2F(unsigned vao, unsigned vbo, const vector<vec2>& vertices, int i) {
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * vertices.size(), vertices.data(), GL_DYNAMIC_DRAW);
-    glEnableVertexAttribArray(i);
-    glVertexAttribPointer(i, 2, GL_FLOAT, GL_FALSE, 0, NULL);
-  }
+  // To upload ot the arrays to the gpu
+  void upload2F(unsigned vao, int index, unsigned vbo, const vector<vec2>& vertices);
+  mat4 Animate();  // Animating | Chaning the T matrix
 
  public:
-  Shape() {
-    // glGenVertexArrays(1, &vao);
-    T = ScaleMatrix({1.0, 1.0, 1.0});
-  }
+  Shape();
+  ~Shape();
 
-  void add(Shape* shape) { shapes.push_back(shape); }
+  void add(Shape* shape);
+  void animate(Animation anim);  // Set the animation
 
-  void animate(Animation anim) { animation = anim; }
+  void Render(mat4 pT = ScaleMatrix({1.0, 1.0, 1.0}));  // Rendering Generic
 
-  ~Shape() {
-    for (Shape* s : shapes) delete s;
-  }
-
-  void Render() {
-    Animate();
-    if (gpuProgram) {
-      gpuProgram->Use();
-      gpuProgram->setUniform(Animate(), "MVP");
-    }
-    Draw();
-    for (Shape* s : shapes) {
-      s->Render(T);
-    }
-  }
-  // virtual ~Shape() = 0;
-  void Render(mat4 pT) {  // pT=parentT
-    Animate();
-    if (gpuProgram) {
-      gpuProgram->Use();
-      gpuProgram->setUniform(Animate() * pT, "MVP");
-    }
-    Draw();
-    for (Shape* s : shapes) {
-      s->Render(T);
-    }
-  };
-
-  virtual void Draw() {}
-
-  // probaly gonna belong to object
+  /*-----------------------Implement-------------------------*/
+  // Drawing the shape
+  virtual void Draw() = 0;  // Draw the shape here
+  // Optional listeners
   virtual void onKeyboard(unsigned char key, vec2 pV) {}
   virtual void onKeyboardUp(unsigned char key, vec2 pV) {}
   virtual void onMouseMotion(vec2 pV) {}
   virtual void onMouse(int button, int state, vec2 pV) {}
-
-  mat4 Animate();
+  /*-----------------------Implement-------------------------*/
 };
 
 }  // namespace simple

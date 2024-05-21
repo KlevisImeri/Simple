@@ -33,7 +33,7 @@ class TexturedQuad : public Shape {
   unsigned int cvao, vbo[2];
   Texture* texture;
   vector<vec2> verteces = {{-0.5, -0.5}, {0.5, -0.5}, {-0.5, 0.5}, {0.5, 0.5}};
-  vec2* sVertex;  // selected vertex
+  vec2* sVertex = 0;  // selected vertex
 
   void initialize() {
     if (!textureQuadGPUprogram.getId()) {
@@ -42,23 +42,21 @@ class TexturedQuad : public Shape {
     glGenVertexArrays(1, &cvao);
     glGenBuffers(2, vbo);
     gpuProgram = &textureQuadGPUprogram;
-    vector<vec2> textureCordinates = {
-        {0.0, 0.0}, {4.0, 0.0}, {0.0, 4.0}, {4.0, 4.0}};
-    upload2F(cvao, vbo[0], verteces, 0);
-    upload2F(cvao, vbo[1], textureCordinates, 1);
+    vector<vec2> textureCordinates = {{0.0, 0.0}, {4.0, 0.0}, {0.0, 4.0}, {4.0, 4.0}};
+    upload2F(cvao, 0, vbo[0], verteces);
+    upload2F(cvao, 1, vbo[1], textureCordinates);
   }
 
  public:
-  TexturedQuad(string path) {
+  TexturedQuad(string path, unsigned int width = 400, unsigned int height = 400) {
     initialize();
     texture = new Texture(path);
   }
 
-  TexturedQuad(vector<vec4> image) {
+  TexturedQuad( vector<vec4> image, unsigned int width = 400, unsigned int height = 400) {
     initialize();
-    texture = new Texture(Window::WIDTH, Window::HEIGHT, image);
+    texture = new Texture(width, height, image);
   }
-
 
   ~TexturedQuad() { delete texture; }
 
@@ -71,7 +69,7 @@ class TexturedQuad : public Shape {
   void onMouseMotion(vec2 pV) override {
     if (sVertex) {
       *sVertex = pV;
-      upload2F(cvao, vbo[0], verteces, 0);
+      upload2F(cvao, 0, vbo[0], verteces);
     }
   };
 

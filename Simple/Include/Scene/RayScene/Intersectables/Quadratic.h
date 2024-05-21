@@ -1,31 +1,24 @@
 #pragma once
 
-#include "mat4.h"
 #include "Intersectable.h"
+#include "mat4.h"
 
 namespace simple {
 
 class Quadratic : public Intersectable {
   mat4 Q;
 
- public: 
-  enum Type { SPHERE }; //iheritace
+ public:
+  enum Type { SPHERE };  // iheritace
 
   Quadratic(Type TYPE, Material* _material) {
     material = _material;
     switch (TYPE) {
       case Type::SPHERE:
       default:
-        Q = mat4(
-          1, 0, 0, 0, 
-          0, 1, 0, 0, 
-          0, 0, 1, 0, 
-          0, 0, 0, 1
-        );
+        Q = mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
     }
   }
-
-  void Draw() override {}
 
   Hit intersect(const Ray& ray) override {
     Hit hit;
@@ -42,7 +35,8 @@ class Quadratic : public Intersectable {
     if (t1 <= 0) return hit;
     hit.t = (t2 > 0) ? t2 : t1;
     hit.position = ray.start + ray.dir * hit.t;
-    hit.normal = vec3(vec4(hit.position, 1) * Q);
+    vec4 n = vec4(hit.position, 1) * Q;
+    hit.normal = vec3(n.x, n.y, n.z);
     hit.material = material;
     return hit;
   };

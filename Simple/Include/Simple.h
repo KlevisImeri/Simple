@@ -6,8 +6,8 @@
 #include "texture.h"
 #include "Window.h"
 #include "Scene.h"
-#include "fragmentShader.h"
-#include "vertexShader.h"
+// #include "fragmentShader.h"
+// #include "vertexShader.h"
 #include "Curve.h"
 #include "TextureQuad.h"
 #include "Dnum.h"
@@ -23,5 +23,6 @@
 #include "Ray.h"
 #include "Camera.h"
 #include "Sphere.h"
+#include "RayScene.h"
 
 #endif // SIMPLE_H

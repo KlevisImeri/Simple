@@ -22,9 +22,8 @@ class Window {
  private:
   unsigned int width, height;  // The windows height and width
   vector<Scene*> scenes;       // A window can have several scenes
-  Scene* sScene;               // selected scene
+  Scene* sScene = 0;               // selected scene
   string name;                 // name of the window
-  int ID;                      // ID of the window
 
   void setGlSettings();  // A function enabling several gl settings.
                          // It can be overriten to enalbes different set of
@@ -32,13 +31,6 @@ class Window {
   void setGlutGlew();    // Inicilize Glut/GL and Glew context | used in constructor
   void printGL();        // Prints information about openg gl in the console
 
-  // glut callback functions
-  void onDisplay();
-  void onIdle();
-  void onKeyboard(unsigned char key, int pX, int pY);
-  void onKeyboardUp(unsigned char key, int pX, int pY);
-  void onMouseMotion(int pX, int pY);
-  void onMouse(int button, int state, int pX, int pY);
 
  public:
   Window(string name = "Simple", unsigned int width = 600,
@@ -49,6 +41,13 @@ class Window {
                                  // belongingto this index
   void add(Scene* scene);        // Add scene to the window
 
+  // glut callback functions (public becuase of glut | glut takes void()*)
+  void onDisplay();
+  void onIdle();
+  void onKeyboard(unsigned char key, int pX, int pY);
+  void onKeyboardUp(unsigned char key, int pX, int pY);
+  void onMouseMotion(int pX, int pY);
+  void onMouse(int button, int state, int pX, int pY);
   // vector<vec4> Window::RayTrace() { return scenes[cS]->render(); }
 };
 

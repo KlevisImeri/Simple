@@ -1,9 +1,17 @@
 #--------------------------Cmake------------------------------#
+# clear
+# cmake -G "MinGW Makefiles" -B build 
+# cd build
+# make clean
+# make run
+
+
 clear
-cmake -G "MinGW Makefiles" -B build
+cmake -G "MinGW Makefiles" -B build -DCMAKE_BUILD_TYPE=Debug
 cd build
 make clean
-make run
+make debug
+
 
 #--------------------------MAKE------------------------------#
 # make

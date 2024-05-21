@@ -86,7 +86,7 @@ inline mat4 RotationMatrix(float angle, vec3 w) {
       vec4(0, 0, 0, 1));
 }
 
-vec2 Viewport2Window(int WIDTH,   int HEIGHT, vec2 pixel) { 
+inline vec2 Viewport2Window(int WIDTH,   int HEIGHT, vec2 pixel) { 
   return {2.0f * pixel.x / WIDTH - 1, 1.0f - 2.0f * pixel.y / HEIGHT}; 
 }
 

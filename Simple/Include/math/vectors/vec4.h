@@ -1,7 +1,7 @@
 
 #pragma once
 
-// #include "vec3.h"
+#include "vec3.h"
 
 namespace simple {
 

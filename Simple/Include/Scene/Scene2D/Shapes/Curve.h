@@ -57,8 +57,7 @@ class Curve : public Shape {
         sp(NULL),
         colorLine(colorLine / 255),
         colorPoint(colorPoint / 255) {
-    if (!curveGPUProgram.getId())  // id=0 mean no program there
-      curveGPUProgram.create(vertex, fragment, "outColor");
+    if (!curveGPUProgram.getId()) curveGPUProgram.create(vertex, fragment, "outColor"); // id=0 mean no program there
 
     gpuProgram = &curveGPUProgram;
 
@@ -77,12 +76,12 @@ class Curve : public Shape {
       double alpha = ((float)i * 2 * M_PI) / np;
       points[i] = vec2(r * cos(alpha), r * sin(alpha));
     }
-    upload2F(vaoPoints, vboPoints, points, 0);
+    upload2F(vaoPoints, 0, vboPoints, points);
     /* --------------------------------------------------------- */
 
     /* ------------------------Vertices--------------------------*/
     CatmullRom();
-    upload2F(vaoVertices, vboVertices, vertices,0);
+    upload2F(vaoVertices, 0, vboVertices, vertices);
     /* --------------------------------------------------------- */
   }
 
@@ -154,9 +153,9 @@ class Curve : public Shape {
     // Update the buffers
     if (sp) {
       *sp = cP;
-      upload2F(vaoPoints, vboPoints, points,0);
+      upload2F(vaoPoints, 0, vboPoints, points);
       CatmullRom();
-      upload2F(vaoVertices, vboVertices, vertices,0);
+      upload2F(vaoVertices, 0, vboVertices, vertices);
     }
   }
 

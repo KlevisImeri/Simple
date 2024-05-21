@@ -1,7 +1,6 @@
 #pragma once
 
 #include "vec2.h"
-#include "vec4.h"
 
 namespace simple {
 
@@ -16,11 +15,6 @@ struct vec3 {
     x = v.x;
     y = v.y;
     z = 0;
-  }
-  vec3(vec4 v) {
-    x = v.x;
-    y = v.x;
-    z = v.x;
   }
   vec3 operator*(float a) const { return vec3(x * a, y * a, z * a); }
   vec3 operator/(float a) const { return vec3(x / a, y / a, z / a); }
