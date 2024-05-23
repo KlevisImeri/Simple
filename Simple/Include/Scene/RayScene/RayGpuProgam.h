@@ -42,12 +42,21 @@ public:
 		setUniform(camera.up, "wUp");
 	}
 
-	void setUniformObjects(const std::vector<Sphere*>& objects) {
+	// void setUniformObjects(const std::vector<Sphere*>& objects) {
+	// 	setUniform((int)objects.size(), "nObjects");
+	// 	char name[256];
+	// 	for (unsigned int o = 0; o < objects.size(); o++) {
+	// 		sprintf(name, "objects[%d].center", o);  setUniform(objects[o]->center, name);
+	// 		sprintf(name, "objects[%d].radius", o);  setUniform(objects[o]->radius, name);
+	// 		sprintf(name, "objects[%d].mat", o);  setUniform(objects[o]->mat, name);
+	// 	}
+	// }
+
+  void setUniformObjects(const std::vector<Quadratic*>& objects) {
 		setUniform((int)objects.size(), "nObjects");
 		char name[256];
 		for (unsigned int o = 0; o < objects.size(); o++) {
-			sprintf(name, "objects[%d].center", o);  setUniform(objects[o]->center, name);
-			sprintf(name, "objects[%d].radius", o);  setUniform(objects[o]->radius, name);
+			sprintf(name, "objects[%d].Q", o);  setUniform(objects[o]->Q, name);
 			sprintf(name, "objects[%d].mat", o);  setUniform(objects[o]->mat, name);
 		}
 	}

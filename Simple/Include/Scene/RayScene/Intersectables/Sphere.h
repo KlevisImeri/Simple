@@ -37,12 +37,12 @@ namespace simple {
 //   }
 // };
 
-struct Sphere {
-//---------------------------
-	vec3 center;
-	float radius;
-	int mat;
+// struct Sphere {
+// //---------------------------
+// 	vec3 center;
+// 	float radius;
+// 	int mat;
 
-	Sphere(const vec3& _center, float _radius, int matIdx) { center = _center; radius = _radius; mat = matIdx; }
-};
+// 	Sphere(const vec3& _center, float _radius, int matIdx) { center = _center; radius = _radius; mat = matIdx; }
+// };
 }  // namespace simple

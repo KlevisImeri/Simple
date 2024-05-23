@@ -38,12 +38,13 @@ void Window::setGlutGlew() {
   char *argv[] = {};
   int argc = 0;
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
   glutInitWindowSize(width, height);
   glutInitWindowPosition(100, 100);
+  glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+  glutCreateWindow(name.c_str());
   glewExperimental = true;
+  glewInit();
   printGL();
-  initGlutGlew = true;
 }
 
 void Window::printGL() {
@@ -57,6 +58,7 @@ void Window::printGL() {
   printf("GLSL Version : %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 }
 
+// DisjointUnionSet
 void Window::onDisplay() {
   if (sScene) sScene->onDisplay();
 }
@@ -84,13 +86,11 @@ Window::Window(std::string name, unsigned int width, unsigned int height) : name
   setGlutGlew();
   setGlSettings();
 
-  glutCreateWindow(name.c_str());
-  glewInit();
+  printGL();
+
   sWindow = this;
-  glutDisplayFunc([]() { 
-    printf("%s", sWindow);
-    sWindow->onDisplay(); 
-    });
+  
+  glutDisplayFunc([]() { sWindow->onDisplay(); });
   glutIdleFunc([]() { sWindow->onIdle(); });
   glutKeyboardFunc([](unsigned char key, int x, int y) { sWindow->onKeyboard(key, x, y); });
   glutKeyboardUpFunc([](unsigned char key, int x, int y) { sWindow->onKeyboardUp(key, x, y); });

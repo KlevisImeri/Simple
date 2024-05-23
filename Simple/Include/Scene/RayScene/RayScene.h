@@ -5,6 +5,7 @@
 #include "RayGpuProgam.h"
 #include "Scene.h"
 #include "vec3.h"
+#include "Quadratic.h"
 
 namespace simple {
 
@@ -12,7 +13,7 @@ class FullScreenTexturedQuad {
   //---------------------------
   unsigned int vao = 0;  // vertex array object id and texture id
  public:
-  void create() {
+  FullScreenTexturedQuad() {
     glGenVertexArrays(1, &vao);  // create 1 vertex array object
     glBindVertexArray(vao);      // make it active
 
@@ -35,25 +36,25 @@ class FullScreenTexturedQuad {
 
 //---------------------------
 class RayScene : public Scene {
-  static inline RayGpuProgam shader;
+  static inline RayGpuProgam rayGpuProgam;
   static inline const char *vertexSource = R"(
-	#version 450
+    #version 450
     precision highp float;
 
-	uniform vec3 wLookAt, wRight, wUp;          // pos of eye
+    uniform vec3 wLookAt, wRight, wUp;          // pos of eye
 
-	layout(location = 0) in vec2 cCamWindowVertex;	// Attrib Array 0
-	out vec3 p;
+    layout(location = 0) in vec2 cCamWindowVertex;	// Attrib Array 0
+    out vec3 p;
 
-	void main() {
-		gl_Position = vec4(cCamWindowVertex, 0, 1);
-		p = wLookAt + wRight * cCamWindowVertex.x + wUp * cCamWindowVertex.y;
-	}
-)";
+    void main() {
+      gl_Position = vec4(cCamWindowVertex, 0, 1);
+      p = wLookAt + wRight * cCamWindowVertex.x + wUp * cCamWindowVertex.y;
+    }
+  )";
   // fragment shader in GLSL
   static inline const char *fragmentSource = R"(
 	#version 450
-    precision highp float;
+  precision highp float;
 
 	struct Material {
 		vec3 ka, kd, ks;
@@ -68,11 +69,10 @@ class RayScene : public Scene {
 		vec3 Le;
 	};
 
-	struct Sphere {
-		vec3 center;
-		float radius;
-		int mat;
-	};
+  struct Quadratic {
+    mat4 Q;
+    int mat;
+  };
 
 	struct Hit {
 		float t;
@@ -87,26 +87,28 @@ class RayScene : public Scene {
 		int depth;
 	};
 
-	const int nMaxObjects = 300, nMaxLights = 2;
+	const int nMaxObjects = 100, nMaxLights = 2;
 
 	uniform vec3 wEye; 
 	uniform int nLights;
 	uniform Light lights[nMaxLights]; 
 	uniform vec3 La;    
-	uniform Material materials[3];  // diffuse, specular, ambient ref
+	uniform Material materials[4];  // diffuse, specular, ambient ref
 	uniform int nObjects;
-	uniform Sphere objects[nMaxObjects];
+	uniform Quadratic objects[nMaxObjects];
 
 	in  vec3 p;					// point on camera window corresponding to the pixel
 	out vec4 fragmentColor;		// output that goes to the raster memory as told by glBindFragDataLocation
 
-	Hit intersect(const Sphere object, const Ray ray) {
+	Hit intersect(const Quadratic object, const Ray ray) {
 		Hit hit;
 		hit.t = -1;
-		vec3 dist = ray.start - object.center;
-		float a = dot(ray.dir, ray.dir);
-		float b = dot(dist, ray.dir) * 2.0f;
-		float c = dot(dist, dist) - object.radius * object.radius;
+    vec4 dir = vec4(ray.dir, 0.0);
+    vec4 start = vec4(ray.start, 1.0);
+    mat4 Q = object.Q;
+		float a = dot(dir*Q, dir);
+		float b = dot(start*Q, dir) * 2.0f;
+		float c = dot(start*Q, start);
 		float discr = b * b - 4.0f * a * c;
 		if (discr < 0) return hit;
 		float sqrt_discr = sqrt(discr);
@@ -114,8 +116,8 @@ class RayScene : public Scene {
 		float t2 = (-b - sqrt_discr) / 2.0f / a;
 		if (t1 <= 0) return hit;
 		hit.t = (t2 > 0) ? t2 : t1;
-		hit.position = ray.start + ray.dir * hit.t;
-		hit.normal = (hit.position - object.center) / object.radius;
+    hit.position = ray.start + ray.dir * hit.t;
+    hit.normal = normalize(vec3(vec4(hit.position, 1.0) * Q));
 		hit.mat = object.mat;
 		return hit;
 	}
@@ -222,9 +224,10 @@ class RayScene : public Scene {
 		ray.depth = 0;
 		fragmentColor = vec4(trace(ray), 1); 
 	}
-)";
+  )";
+
   FullScreenTexturedQuad fullScreenTexturedQuad;
-  std::vector<Sphere *> objects;
+  std::vector<Quadratic *> objects;
   std::vector<Light *> lights;
   vec3 La;
   Camera camera;
@@ -234,7 +237,7 @@ class RayScene : public Scene {
 
  public:
   RayScene() {
-    if (!shader.getId()) shader.create(vertexSource, fragmentSource, "fragmentColor");
+    if (!rayGpuProgam.getId()) rayGpuProgam.create(vertexSource, fragmentSource, "fragmentColor");
 
     vec3 eye = vec3(0, 0, 2);
     vec3 vup = vec3(0, 1, 0);
@@ -247,13 +250,36 @@ class RayScene : public Scene {
 
     vec3 kd(0.3f, 0.2f, 0.1f), ks(10, 10, 10);
     materials.push_back(new RoughMaterial(kd, ks, 50));
+    materials.push_back(new RoughMaterial(vec3(0.7f, 0.2f, 0.2f), vec3(0.02, 0.02, 0.02), 100));
     materials.push_back(new SmoothReflectorMaterial(vec3(0.95f, 0.85f, 0.75f)));
     materials.push_back(new SmoothRefractorMaterial(vec3(0.1f, 0.15f, 0.2f), 1.2f));
 
-    for (int i = 0; i < 300; i++) {
-      objects.push_back(new Sphere(vec3(rnd() - 0.5f, rnd() - 0.5f, rnd() - 0.5f), rnd() * 0.1f, i % 3));
-      //			objects.push_back(new Sphere(vec3(rnd() - 0.5f, rnd() - 0.5f, rnd() - 0.5f), rnd() * 0.1f, 0));
-    }
+    objects.push_back((new Quadratic(mat4(1,    0,    0,    0,
+                                          0,    0,    0,  0.5,
+                                          0,    0,    1,    0,
+                                          0,    0.5,  0,    0), 2))->Scale(0.6,1,0.6)->Translate(0.0,0.3,0.0));
+
+
+
+    objects.push_back((new Quadratic(mat4(1,    0,    0,    0,
+                                          0,    1,    0,    0,
+                                          0,    0,    1,    0,
+                                          0,    0,    0, -0.5), 1))->Scale(0.2,0.4,0.3)->Rotate(-M_PI/4,{0,0,1})->Translate(-0.7,0.3,0));
+
+    objects.push_back((new Quadratic(mat4(1,    0,    0,    0,
+                                          0,    1,    0,    0,
+                                          0,    0,    1,    0,
+                                          0,    0,    0, -0.5), 0))->Scale(0.2,0.4,0.3)->Rotate(M_PI/4,{0,0,1})->Translate(0.7,0.3,0));
+
+    // objects.push_back(new Sphere(vec3(0, 0, -0.6), 0.3, 0));
+
+    // objects.push_back(new Sphere(vec3(0, 0, 0), 0.3, 1));
+    // objects.push_back(new Sphere(vec3(0, 0, -0.6), 0.3, 0));
+
+    // for (int i = 0; i < 300; i++) {
+    //  objects.push_back(new Sphere(vec3(rnd() - 0.5f, rnd() - 0.5f, rnd() - 0.5f), rnd() * 0.1f, i % 3));
+    //   //			objects.push_back(new Sphere(vec3(rnd() - 0.5f, rnd() - 0.5f, rnd() - 0.5f), rnd() * 0.1f, 0));
+    // }
   }
 
   void setUniform(RayGpuProgam &shader) {
@@ -266,17 +292,21 @@ class RayScene : public Scene {
   void Animate(float dt) { camera.Animate(dt); }
 
   void onDisplay() override {
-    shader.Use();
     static int nFrames = 0;
     nFrames++;
     static long tStart = glutGet(GLUT_ELAPSED_TIME);
     long tEnd = glutGet(GLUT_ELAPSED_TIME);
-    printf("%d msec\r", (tEnd - tStart) / nFrames);
+    printf("%d msec\n", (tEnd - tStart) / nFrames);
 
-    glClearColor(1.0f, 0.5f, 0.8f, 1.0f);                // background color
+    // vec4 color(159, 123, 189, 255);
+    // color = color / 255.0f;
+    // glClearColor(color.x, color.y, color.z, color.w);
+
+    // glClearColor(1.0f, 0.5f, 0.8f, 1.5f);  // background color
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // clear the screen
 
-    setUniform(shader);
+    rayGpuProgam.Use();
+    setUniform(rayGpuProgam);
     fullScreenTexturedQuad.Draw();
 
     glutSwapBuffers();

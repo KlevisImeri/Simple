@@ -18,11 +18,11 @@ class QuadScene : public Scene2D {
 int main() {
   Window win0;
   win0.add(new RayScene());
-  win0.run();
 
   // Window win1;
   // win1.add(new QuadScene());
 
+  win0.run();
   return 0;
 }
 

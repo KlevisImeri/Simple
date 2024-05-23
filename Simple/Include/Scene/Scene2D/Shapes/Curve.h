@@ -139,7 +139,7 @@ class Curve : public Shape {
 
     glBindVertexArray(vboPoints);
     gpuProgram->setUniform(colorPoint, "color");
-    // glPointSize(20);         // Set point size to 5
+    // glPointSize(20);      // Set point size to 5
     glDrawArrays(GL_POINTS,  // how to draw
                  0,          // start
                  np          // how many

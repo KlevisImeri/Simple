@@ -44,11 +44,11 @@ struct mat4 {  // row-major matrix 4x4
   operator float *() const { return (float *)this; }
 };
 
-inline mat4 T(mat4 M) {
+inline mat4 transpose(mat4 M) {
     return mat4(
       M.rows[0][0], M.rows[1][0], M.rows[2][0], M.rows[3][0],
       M.rows[0][1], M.rows[1][1], M.rows[2][1], M.rows[3][1],
-      M.rows[1][2], M.rows[2][2], M.rows[2][2], M.rows[3][2],
+      M.rows[0][2], M.rows[1][2], M.rows[2][2], M.rows[3][2],
       M.rows[0][3], M.rows[1][3], M.rows[2][3], M.rows[3][3]
     );
   }
